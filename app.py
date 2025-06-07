@@ -4,6 +4,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import numpy as np
 import pandas as pd
+from tensorflow import keras
 
 # Run the app with: streamlit run "F:/Complete ML/All_Projects/MLProject5/app.py"
 # conda activate mlproject
@@ -106,7 +107,7 @@ st.markdown("""
 
 heart_disease_model = pickle.load(open('model/heart_disease_model.sav', 'rb'))
 parkinsons_model = pickle.load(open('model/parkinsons_model.sav', 'rb'))
-breast_cancer_model = pickle.load(open('model/breast_cancer.sav', 'rb'))
+breast_cancer_model = keras.models.load_model('model/breast_cancer.keras')
 diabetes_model = pickle.load(open('model/diabetes_model.sav', 'rb'))
 diagnosis = pickle.load(open('model/svc.sav', 'rb'))
 
