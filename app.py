@@ -6,8 +6,7 @@ import numpy as np
 import pandas as pd
 
 # Run the app with: streamlit run "F:/Complete ML/All_Projects/MLProject5/app.py"
-# website : https://ashis07.streamlit.app/
-# conda activate mlproject3
+# conda activate mlproject
 
 # Set page configuration
 st.set_page_config(page_title="Health Assistant",
