@@ -212,12 +212,15 @@ if selected == 'Diabetes Prediction':
     if st.button('Diabetes Test Result'):
         user_input = [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
                     BMI, DiabetesPedigreeFunction, Age]
-        user_input = [float(x) for x in user_input]
-        diab_prediction = diabetes_model.predict([user_input])
-        if diab_prediction[0] == 1:
-            diab_diagnosis = '⚠️ The person is <b>diabetic</b>'
+        if any(x.strip() == "" for x in user_input):
+            st.warning("Please fill all the columns before submitting.")
         else:
-            diab_diagnosis = '✅ The person is <b>not diabetic</b>'
+            user_input = [float(x) for x in user_input]
+            diab_prediction = diabetes_model.predict([user_input])
+            if diab_prediction[0] == 1:
+                diab_diagnosis = '⚠️ The person is <b>diabetic</b>'
+            else:
+                diab_diagnosis = '✅ The person is <b>not diabetic</b>'
 
     if diab_diagnosis:
         st.markdown(f'<div class="success-box">{diab_diagnosis}</div>', unsafe_allow_html=True)
@@ -258,12 +261,15 @@ if selected == 'Heart Disease Prediction':
     if st.button('Heart Disease Test Result'):
         user_input = [age, sex, cp, trestbps, chol, fbs, restecg,
                     thalach, exang, oldpeak, slope, ca, thal]
-        user_input = [float(x) for x in user_input]
-        heart_prediction = heart_disease_model.predict([user_input])
-        if heart_prediction[0] == 1:
-            heart_diagnosis = '❤️ The person <b>has heart disease</b>'
+        if any(x.strip() == "" for x in user_input):
+            st.warning("Please fill all the columns before submitting.")
         else:
-            heart_diagnosis = '💚 The person <b>does not have any heart disease</b>'
+            user_input = [float(x) for x in user_input]
+            heart_prediction = heart_disease_model.predict([user_input])
+            if heart_prediction[0] == 1:
+                heart_diagnosis = '❤️ The person <b>has heart disease</b>'
+            else:
+                heart_diagnosis = '💚 The person <b>does not have any heart disease</b>'
 
     if heart_diagnosis:
         st.markdown(f'<div class="success-box">{heart_diagnosis}</div>', unsafe_allow_html=True)
@@ -287,12 +293,16 @@ if selected == "Parkinsons Prediction":
 
     parkinsons_diagnosis = ''
     if st.button("Parkinson's Test Result"):
-        user_input = [float(inputs[f]) for f in parkinsons_features]
-        parkinsons_prediction = parkinsons_model.predict([user_input])
-        if parkinsons_prediction[0] == 1:
-            parkinsons_diagnosis = "🧠 The person <b>has Parkinson's disease</b>"
+        user_input = [inputs[f] for f in parkinsons_features]
+        if any(x.strip() == "" for x in user_input):
+            st.warning("Please fill all the columns before submitting.")
         else:
-            parkinsons_diagnosis = "🧠 The person <b>does not have Parkinson's disease</b>"
+            user_input = [float(x) for x in user_input]
+            parkinsons_prediction = parkinsons_model.predict([user_input])
+            if parkinsons_prediction[0] == 1:
+                parkinsons_diagnosis = "🧠 The person <b>has Parkinson's disease</b>"
+            else:
+                parkinsons_diagnosis = "🧠 The person <b>does not have Parkinson's disease</b>"
 
     if parkinsons_diagnosis:
         st.markdown(f'<div class="success-box">{parkinsons_diagnosis}</div>', unsafe_allow_html=True)
@@ -329,16 +339,18 @@ if selected == 'Breast Cancer Prediction':
         user_input = [radius_mean, texture_mean, perimeter_mean, area_mean,
                     smoothness_mean, compactness_mean, concavity_mean,
                     concave_points_mean, symmetry_mean, fractal_dimension_mean]
-        user_input = [float(x) for x in user_input]
-        breast_cancer_prediction = breast_cancer_model.predict([user_input])
-        if breast_cancer_prediction[0] == 1:
-            breast_cancer_diagnosis = '🩺 The person <b>has Breast Cancer</b>'
+        if any(x.strip() == "" for x in user_input):
+            st.warning("Please fill all the columns before submitting.")
         else:
-            breast_cancer_diagnosis = '🩺 The person <b>does not have Breast Cancer</b>'
+            user_input = [float(x) for x in user_input]
+            breast_cancer_prediction = breast_cancer_model.predict([user_input])
+            if breast_cancer_prediction[0] == 1:
+                breast_cancer_diagnosis = '🩺 The person <b>has Breast Cancer</b>'
+            else:
+                breast_cancer_diagnosis = '🩺 The person <b>does not have Breast Cancer</b>'
 
     if breast_cancer_diagnosis:
         st.markdown(f'<div class="success-box">{breast_cancer_diagnosis}</div>', unsafe_allow_html=True)
-
 
 
 if selected == 'Diagnosis':
