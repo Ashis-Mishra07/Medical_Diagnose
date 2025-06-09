@@ -212,7 +212,7 @@ if selected == 'Diabetes Prediction':
     if st.button('Diabetes Test Result'):
         user_input = [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
                     BMI, DiabetesPedigreeFunction, Age]
-        if any(x.strip() == "" for x in user_input):
+        if any((x is None) or (str(x).strip() == "") for x in user_input):
             st.warning("Please fill all the columns before submitting.")
         else:
             user_input = [float(x) for x in user_input]
@@ -261,7 +261,7 @@ if selected == 'Heart Disease Prediction':
     if st.button('Heart Disease Test Result'):
         user_input = [age, sex, cp, trestbps, chol, fbs, restecg,
                     thalach, exang, oldpeak, slope, ca, thal]
-        if any(x.strip() == "" for x in user_input):
+        if any((x is None) or (str(x).strip() == "") for x in user_input):
             st.warning("Please fill all the columns before submitting.")
         else:
             user_input = [float(x) for x in user_input]
@@ -294,7 +294,7 @@ if selected == "Parkinsons Prediction":
     parkinsons_diagnosis = ''
     if st.button("Parkinson's Test Result"):
         user_input = [inputs[f] for f in parkinsons_features]
-        if any(x.strip() == "" for x in user_input):
+        if any((x is None) or (str(x).strip() == "") for x in user_input):
             st.warning("Please fill all the columns before submitting.")
         else:
             user_input = [float(x) for x in user_input]
@@ -339,7 +339,7 @@ if selected == 'Breast Cancer Prediction':
         user_input = [radius_mean, texture_mean, perimeter_mean, area_mean,
                     smoothness_mean, compactness_mean, concavity_mean,
                     concave_points_mean, symmetry_mean, fractal_dimension_mean]
-        if any(x.strip() == "" for x in user_input):
+        if any((x is None) or (str(x).strip() == "") for x in user_input):
             st.warning("Please fill all the columns before submitting.")
         else:
             user_input = [float(x) for x in user_input]
