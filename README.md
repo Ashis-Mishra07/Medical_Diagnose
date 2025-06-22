@@ -99,6 +99,28 @@ This feature aims to **bridge prediction with actionable lifestyle insights**, h
 
 ---
 
+## 💬 AI Health Chatbot Companion
+
+After receiving your diagnosis, interact with our **AI-powered Health Chatbot** to better understand your condition, clarify doubts, and explore additional wellness tips.
+
+### 🤖 Key Features
+
+- 🧠 **Conversational Support**  
+  Ask questions like _“What is this disease?”_, _“How serious is it?”_, or _“How can I avoid it?”_ — and receive human-like responses powered by advanced AI models.
+
+- 🩺 **Follow-up Guidance**  
+  The chatbot can summarize your diagnosis and suggest follow-up actions, including questions to ask your real doctor.
+
+- 🔗 **Instant Relevance**  
+  It uses your diagnosis data to personalize the interaction — no need to repeat your inputs.
+
+- 🧭 **User-Friendly Interface**  
+  Smooth, interactive, and beginner-friendly — even non-technical users can easily navigate it.
+
+> 🗨️ This feature makes your health journey **easier and more engaging**, offering a virtual companion right after your results are presented.
+
+---
+
 
 
 
