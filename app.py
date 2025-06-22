@@ -15,8 +15,127 @@ st.set_page_config(page_title="Health Assistant",
                    page_icon="🧑‍⚕️")
 
 # 👉👉👉 ADD THIS LINE BELOW 👇👇👇
-st.markdown("<h1 style='text-align: center; color: #4CAF50;'>Multiple Disease Prediction System</h1>", unsafe_allow_html=True)
+# Replace the existing heading with this enhanced version
+st.markdown("""
+<div style="display: flex; justify-content: center; align-items: center; gap: 15px; position: relative;">
+    <h1 style='color: #4CAF50; margin: 0;'>Multiple Disease Prediction System</h1>
+    <div class="chat-icon-container">
+        <a href="https://ashiskumarmishra-ai-chat.hf.space/" target="_blank" style="text-decoration: none;">
+            <div class="chat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5ZM3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.58 26.58 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.933.933 0 0 1-.765.935c-.845.147-2.34.346-4.235.346-1.895 0-3.39-.2-4.235-.346A.933.933 0 0 1 3 9.219V8.062Zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.767 24.767 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25.286 25.286 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135Z"/>
+                    <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2V1.866ZM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5Z"/>
+                </svg>
+            </div>
+        </a>
+        <span class="orbit-text orbit-text-1">Chat with AI</span>
+        <span class="orbit-text orbit-text-2">Click me!</span>
+        <span class="orbit-text orbit-text-3">Get help</span>
+        <span class="orbit-text orbit-text-4">Ask anything</span>
+    </div>
+</div>
 
+<style>
+    .chat-icon-container {
+        position: relative;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .chat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        animation: pulse-animation 2s infinite;
+        transition: all 0.3s;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+    
+    .chat-icon:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .orbit-text {
+        position: absolute;
+        padding: 3px 8px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 10px;
+        z-index: 1;
+        opacity: 0;
+        white-space: nowrap;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    .orbit-text-1 {
+        animation: orbit1 8s linear infinite;
+    }
+    
+    .orbit-text-2 {
+        animation: orbit2 8s linear infinite;
+    }
+    
+    .orbit-text-3 {
+        animation: orbit3 8s linear infinite;
+    }
+    
+    .orbit-text-4 {
+        animation: orbit4 8s linear infinite;
+    }
+    
+    @keyframes orbit1 {
+        0%, 100% { opacity: 0; transform: translate(20px, -20px) scale(0.5); }
+        25% { opacity: 1; transform: translate(50px, 0) scale(1); }
+        50% { opacity: 0; transform: translate(20px, 20px) scale(0.5); }
+    }
+    
+    @keyframes orbit2 {
+        0%, 100% { opacity: 0; transform: translate(-20px, -20px) scale(0.5); }
+        25%, 75% { opacity: 0; }
+        50% { opacity: 1; transform: translate(-50px, 0) scale(1); }
+    }
+    
+    @keyframes orbit3 {
+        0% { opacity: 0; transform: translate(20px, 20px) scale(0.5); }
+        25%, 75% { opacity: 0; }
+        50% { opacity: 0; }
+        75% { opacity: 1; transform: translate(0, 50px) scale(1); }
+        100% { opacity: 0; transform: translate(20px, 20px) scale(0.5); }
+    }
+    
+    @keyframes orbit4 {
+        0% { opacity: 0; transform: translate(-20px, 20px) scale(0.5); }
+        25% { opacity: 1; transform: translate(0, -50px) scale(1); }
+        50%, 100% { opacity: 0; }
+    }
+    
+    @keyframes pulse-animation {
+        0% {
+            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
 
 st.markdown("""
 <style>
@@ -158,10 +277,10 @@ def get_predicted_value(patient_symptoms):
 with st.sidebar:
     selected = option_menu(
         'Select disease',
-        ['Diabetes Prediction', 'Heart Disease Prediction', 'Parkinsons Prediction', 'Breast Cancer Prediction' ,
-         'Diagnosis'],
+        ['Diabetes Prediction', 'Heart Disease Prediction', 'Parkinsons Prediction', 'Breast Cancer Prediction',
+        'Diagnosis'],  # Added "Medical Resources"
         menu_icon='hospital-fill',
-        icons=['droplet-half', 'heart', 'activity', 'gender-female', 'search-heart'],
+        icons=['droplet-half', 'heart', 'activity', 'gender-female', 'search-heart'],  # Added globe icon
         default_index=0
     )
 
@@ -184,6 +303,8 @@ with st.sidebar:
     }
     </style>
     """, unsafe_allow_html=True)
+
+
 
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
@@ -420,4 +541,41 @@ if selected == 'Diagnosis':
                 st.markdown("<div class='success-box'><b>Recommended Diet:</b><ul>" + "".join([f"<li>{d}</li>" for d in res['rec_diet']]) + "</ul></div>", unsafe_allow_html=True)
             else:
                 st.info("No diet recommendations available.")
+
+
+if selected == 'QuickAid AI':
+    st.markdown("""
+    <style>
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .pulse-text {
+      animation: pulse 2s infinite;
+      font-weight: bold;
+      color: #16a34a;
+    }
+    .card:hover {
+      box-shadow: 0 0 15px rgba(22, 163, 74, 0.4);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    </style>
+
+    <a href="https://ashiskumarmishra-ai-chat.hf.space/" target="_blank" style="text-decoration: none;">
+        <div class="card" style="background-color: #f0fdf4; border: 2px solid #16a34a; border-radius: 12px; padding: 25px; text-align: center; margin: 20px 0; transition: 0.3s;">
+            <h2 style="color: #166534; margin-bottom: 10px; font-size: 24px;">🤖 Your AI Health Assistant</h2>
+            <p style="color: #14532d; font-size: 16px; margin: 0 auto; max-width: 500px;">
+                Health made easy. Just speak and upload a photo describing your issue — and get instant, AI-generated remedies and insights tailored for you.
+            </p>
+            <button style="background-color: #16a34a; color: white; padding: 12px 24px; 
+                           border-radius: 8px; border: none; font-weight: bold; font-size: 16px;
+                           cursor: pointer; margin-top: 20px;">
+                🌟 Launch AI Health Assistant
+            </button>
+            <p class="pulse-text" style="margin-top: 15px;">⬅ Click here to try it now!</p>
+        </div>
+    </a>
+    """, unsafe_allow_html=True)
+
 
