@@ -53,7 +53,7 @@ st.markdown("""
         cursor: pointer;
         color: white;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        animation: pulse-animation 2s infinite;
+        animation: pulse-animation 2s infinite, pulse-scale 3s ease-in-out infinite;
         transition: all 0.3s;
         position: absolute;
         top: 50%;
@@ -121,6 +121,12 @@ st.markdown("""
         0% { opacity: 0; transform: translate(-20px, 20px) scale(0.5); }
         25% { opacity: 1; transform: translate(0, -50px) scale(1); }
         50%, 100% { opacity: 0; }
+    }
+            
+    @keyframes pulse-scale {
+        0% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.5); }
+        100% { transform: translate(-50%, -50%) scale(1); }
     }
     
     @keyframes pulse-animation {
