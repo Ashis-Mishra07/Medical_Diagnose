@@ -267,6 +267,11 @@ load_dotenv()
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+# # Add this after the API key loading
+# st.sidebar.write(f"GROQ_API_KEY loaded: {bool(GROQ_API_KEY)}")
+# if GROQ_API_KEY:
+#     st.sidebar.write(f"Key starts with: {GROQ_API_KEY[:4]}...")
+
 
 @st.cache_resource
 def initialize_chatbot():
@@ -906,4 +911,5 @@ if selected == 'About':
     </div>
     """, unsafe_allow_html=True)
 
-        
+
+
