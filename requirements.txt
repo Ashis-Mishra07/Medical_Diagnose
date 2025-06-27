@@ -5,7 +5,15 @@ streamlit==1.29.0
 streamlit-option-menu==0.3.6
 xgboost==1.7.6
 tensorflow==2.12.0
-# protobuf==4.21.12
-# scipy==1.10.1
-# gensim==4.3.3
-# mediapipe==0.10.21
+sentence-transformers==2.6.1
+langchain
+flask
+pypdf
+python-dotenv
+pinecone[grpc]
+langchain-pinecone
+langchain_community
+langchain_openai
+langchain_experimental
+langchain-groq
+-e .
