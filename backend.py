@@ -29,6 +29,7 @@ async def health_check():
         "message": "Backend is ready to process medical news requests"
     }
 
+
 @app.post("/generate-news-audio")
 async def generate_news_audio(request: NewsRequest):
     try:
