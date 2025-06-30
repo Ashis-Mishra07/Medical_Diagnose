@@ -914,40 +914,194 @@ if selected == 'About':
 
 
 
+# if selected == 'Medical News':
+#     import subprocess
+#     import time
+#     import requests
+
+#     # Start backend only once per session
+#     if "backend_started" not in st.session_state:
+#         def start_backend():
+#             try:
+#                 st.info("🚀 Starting backend service...")
+#                 backend_process = subprocess.Popen(
+#                     ["python", "backend.py"],
+#                     stdout=subprocess.PIPE,
+#                     stderr=subprocess.PIPE
+#                 )
+#                 timeout = 15
+#                 while timeout > 0:
+#                     try:
+#                         r = requests.get("http://localhost:1234/health", timeout=2)
+#                         if r.status_code == 200:
+#                             return backend_process
+#                     except:
+#                         time.sleep(1)
+#                         timeout -= 1
+#                 st.error("❌ Failed to start backend.")
+#                 return None
+#             except Exception as e:
+#                 st.error(f"❌ Error starting backend: {str(e)}")
+#                 return None
+
+#         backend_proc = start_backend()
+#         st.session_state.backend_started = True
+#         st.session_state.backend_proc = backend_proc
+
+#     st.title('📰 Medical News & Updates')
+#     st.markdown("Stay updated with the latest medical research, health news, and healthcare developments")
+
+#     if 'medical_topics' not in st.session_state:
+#         st.session_state.medical_topics = []
+#     if 'news_input_key' not in st.session_state:
+#         st.session_state.news_input_key = 0
+
+#     st.markdown("### 🩺 Select Medical Topics")
+#     col1, col2, col3 = st.columns(3)
+#     medical_categories = [
+#         "COVID-19 Updates", "Mental Health", "Medical Technology",
+#         "Pharmaceutical News", "Healthcare Policy", "Clinical Trials"
+#     ]
+#     for i, category in enumerate(medical_categories):
+#         col = [col1, col2, col3][i % 3]
+#         with col:
+#             if st.button(f"🏥 {category}", key=f"cat_{i}"):
+#                 if category not in st.session_state.medical_topics and len(st.session_state.medical_topics) < 3:
+#                     st.session_state.medical_topics.append(category)
+#                     st.rerun()
+
+#     st.markdown("---")
+#     st.markdown("##### 📝 Add Custom Medical Topic")
+#     col1, col2 = st.columns([4, 1])
+#     with col1:
+#         new_medical_topic = st.text_input(
+#             "Enter a medical topic to analyze",
+#             key=f"medical_topic_input_{st.session_state.news_input_key}",
+#             placeholder="e.g. Alzheimer's disease research"
+#         )
+#     with col2:
+#         add_disabled = len(st.session_state.medical_topics) >= 3 or not new_medical_topic.strip()
+#         if st.button("Add ➕", disabled=add_disabled, key="add_medical_topic"):
+#             if new_medical_topic.strip() not in st.session_state.medical_topics:
+#                 st.session_state.medical_topics.append(new_medical_topic.strip())
+#                 st.session_state.news_input_key += 1
+#                 st.rerun()
+
+#     if st.session_state.medical_topics:
+#         st.markdown("### ✅ Selected Medical Topics")
+#         for i, topic in enumerate(st.session_state.medical_topics[:3]):
+#             cols = st.columns([4, 1])
+#             cols[0].markdown(f"🩺 **{i+1}.** {topic}")
+#             if cols[1].button("Remove ❌", key=f"remove_medical_{i}"):
+#                 del st.session_state.medical_topics[i]
+#                 st.rerun()
+
+#     st.markdown("---")
+#     st.markdown("### 📊 News Sources")
+#     source_col1, source_col2 = st.columns(2)
+#     with source_col1:
+#         source_type = st.selectbox(
+#             "Select Information Sources",
+#             options=["both", "news", "reddit"],
+#             format_func=lambda x: {
+#                 "both": "🌐 Medical News & Forums",
+#                 "news": "📰 Medical News Only", 
+#                 "reddit": "💬 Medical Forums Only"
+#             }[x]
+#         )
+#     with source_col2:
+#         st.markdown("""
+#         <div style="background-color: #4CAF50; border-left: 4px solid #4CAF50; padding: 10px; margin-top: 22px;">
+#             <small><strong>📌 Note:</strong> Aggregated from verified medical journals and forums</small>
+#         </div>
+#         """, unsafe_allow_html=True)
+
+#     st.markdown("---")
+#     st.markdown("### 🔊 Medical News Audio Summary")
+#     col1, col2 = st.columns([2, 1])
+#     with col1:
+#         generate_disabled = len(st.session_state.medical_topics) == 0
+#         if st.button("🚀 Generate Medical News Summary", disabled=generate_disabled):
+#             if not st.session_state.medical_topics:
+#                 st.error("❌ Please add at least one medical topic")
+#             else:
+#                 with st.spinner("🔍 Analyzing topics and generating audio..."):
+#                     try:
+#                         response = requests.post(
+#                             "http://localhost:1234/generate-news-audio",
+#                             json={
+#                                 "topics": st.session_state.medical_topics,
+#                                 "source_type": source_type
+#                             }
+#                         )
+#                         if response.status_code == 200:
+#                             st.success("✅ Summary generated!")
+#                             st.markdown("### 🎧 Listen to Your Medical News Summary:")
+#                             st.audio(response.content, format="audio/mpeg")
+#                             filename = f"medical_news_{'_'.join(st.session_state.medical_topics[:2])}.mp3"
+#                             filename = filename.replace(' ', '_')
+#                             st.download_button(
+#                                 label="💾 Download Audio",
+#                                 data=response.content,
+#                                 file_name=filename,
+#                                 mime="audio/mpeg"
+#                             )
+#                         else:
+#                             try:
+#                                 error_detail = response.json().get("detail", "Unknown error")
+#                                 st.error(f"API Error ({response.status_code}): {error_detail}")
+#                             except Exception:
+#                                 st.error(f"Unexpected API Response: {response.text}")
+#                     except requests.exceptions.ConnectionError:
+#                         st.error("🔌 Connection Error: Could not reach the backend server")
+#                     except Exception as e:
+#                         st.error(f"⚠️ Unexpected Error: {str(e)}")
+#     with col2:
+#         st.markdown("""
+#         <div style="background-color: #f8f9fa; border-radius: 8px; padding: 15px; margin-top: 10px;">
+#             <h5 style="color: #495057; margin-bottom: 10px;">🎧 Audio Features:</h5>
+#             <ul style="font-size: 14px; color: #6c757d;">
+#                 <li>🔊 Professional narration</li>
+#                 <li>📝 Key findings summary</li>
+#                 <li>⏱️ 5-10 minute updates</li>
+#                 <li>💾 Downloadable MP3</li>
+#             </ul>
+#         </div>
+#         """, unsafe_allow_html=True)
+
+#     st.markdown("---")
+#     st.markdown("### 📚 Additional Medical Resources")
+#     col1, col2, col3 = st.columns(3)
+#     with col1:
+#         st.markdown("""
+#         <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+#                     border-radius: 10px; padding: 15px; text-align: center;">
+#             <h4 style="color: #1565c0; margin: 5px 0;">🏥 Medical Journals</h4>
+#             <p style="color: #1976d2; font-size: 14px;">Latest research & studies</p>
+#         </div>
+#         """, unsafe_allow_html=True)
+#     with col2:
+#         st.markdown("""
+#         <div style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+#                     border-radius: 10px; padding: 15px; text-align: center;">
+#             <h4 style="color: #7b1fa2; margin: 5px 0;">🔬 Research Updates</h4>
+#             <p style="color: #8e24aa; font-size: 14px;">Clinical trials & innovation</p>
+#         </div>
+#         """, unsafe_allow_html=True)
+#     with col3:
+#         st.markdown("""
+#         <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffcc80 100%);
+#                     border-radius: 10px; padding: 15px; text-align: center;">
+#             <h4 style="color: #ef6c00; margin: 5px 0;">💊 Drug Updates</h4>
+#             <p style="color: #f57c00; font-size: 14px;">FDA approvals & pharma news</p>
+#         </div>
+#         """, unsafe_allow_html=True)
+
+from utils import generate_broadcast_news, tts_to_audio
+from news_scraper import NewsScraper
+from reddit_scraper import scrape_reddit_topics
+
 if selected == 'Medical News':
-    import subprocess
-    import time
-    import requests
-
-    # Start backend only once per session
-    if "backend_started" not in st.session_state:
-        def start_backend():
-            try:
-                st.info("🚀 Starting backend service...")
-                backend_process = subprocess.Popen(
-                    ["python", "backend.py"],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE
-                )
-                timeout = 15
-                while timeout > 0:
-                    try:
-                        r = requests.get("http://localhost:1234/health", timeout=2)
-                        if r.status_code == 200:
-                            return backend_process
-                    except:
-                        time.sleep(1)
-                        timeout -= 1
-                st.error("❌ Failed to start backend.")
-                return None
-            except Exception as e:
-                st.error(f"❌ Error starting backend: {str(e)}")
-                return None
-
-        backend_proc = start_backend()
-        st.session_state.backend_started = True
-        st.session_state.backend_proc = backend_proc
-
     st.title('📰 Medical News & Updates')
     st.markdown("Stay updated with the latest medical research, health news, and healthcare developments")
 
@@ -1021,39 +1175,41 @@ if selected == 'Medical News':
     col1, col2 = st.columns([2, 1])
     with col1:
         generate_disabled = len(st.session_state.medical_topics) == 0
+        # ...existing code...
+        import asyncio
+
         if st.button("🚀 Generate Medical News Summary", disabled=generate_disabled):
             if not st.session_state.medical_topics:
                 st.error("❌ Please add at least one medical topic")
             else:
                 with st.spinner("🔍 Analyzing topics and generating audio..."):
                     try:
-                        response = requests.post(
-                            "http://localhost:1234/generate-news-audio",
-                            json={
-                                "topics": st.session_state.medical_topics,
-                                "source_type": source_type
-                            }
+                        news_data, reddit_data = {}, {}
+                        if source_type in ["news", "both"]:
+                            news_scraper = NewsScraper()
+                            news_data = asyncio.run(news_scraper.scrape_news(st.session_state.medical_topics))
+                        if source_type in ["reddit", "both"]:
+                            reddit_data = asyncio.run(scrape_reddit_topics(st.session_state.medical_topics))
+                        summary = generate_broadcast_news(
+                            api_key=os.getenv("GROQ_API_KEY"),
+                            news_data=news_data,
+                            reddit_data=reddit_data,
+                            topics=st.session_state.medical_topics
                         )
-                        if response.status_code == 200:
-                            st.success("✅ Summary generated!")
-                            st.markdown("### 🎧 Listen to Your Medical News Summary:")
-                            st.audio(response.content, format="audio/mpeg")
-                            filename = f"medical_news_{'_'.join(st.session_state.medical_topics[:2])}.mp3"
-                            filename = filename.replace(' ', '_')
-                            st.download_button(
-                                label="💾 Download Audio",
-                                data=response.content,
-                                file_name=filename,
-                                mime="audio/mpeg"
-                            )
-                        else:
-                            try:
-                                error_detail = response.json().get("detail", "Unknown error")
-                                st.error(f"API Error ({response.status_code}): {error_detail}")
-                            except Exception:
-                                st.error(f"Unexpected API Response: {response.text}")
-                    except requests.exceptions.ConnectionError:
-                        st.error("🔌 Connection Error: Could not reach the backend server")
+                        audio_path = tts_to_audio(text=summary, language="en")
+                        with open(audio_path, "rb") as f:
+                            audio_bytes = f.read()
+                        st.success("✅ Summary generated!")
+                        st.markdown("### 🎧 Listen to Your Medical News Summary:")
+                        st.audio(audio_bytes, format="audio/mpeg")
+                        filename = f"medical_news_{'_'.join(st.session_state.medical_topics[:2])}.mp3"
+                        filename = filename.replace(' ', '_')
+                        st.download_button(
+                            label="💾 Download Audio",
+                            data=audio_bytes,
+                            file_name=filename,
+                            mime="audio/mpeg"
+                        )
                     except Exception as e:
                         st.error(f"⚠️ Unexpected Error: {str(e)}")
     with col2:
@@ -1097,3 +1253,14 @@ if selected == 'Medical News':
         </div>
         """, unsafe_allow_html=True)
 
+    st.markdown("---")
+    st.markdown("""
+    <div style="background-color: #2e260c; border: 2px solid #ffc107; border-radius: 10px; padding: 15px; margin: 20px 0;">
+        <h4 style="color: #ffc107; margin-bottom: 10px;">⚠️ Medical News Disclaimer</h4>
+        <p style="color: #ffc107; margin: 0; font-size: 14px;">
+            <strong>Important:</strong> This news aggregation is for informational purposes only.
+            Medical news should not replace professional medical advice. Always consult healthcare
+            professionals for medical decisions and verify information from primary sources.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
