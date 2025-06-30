@@ -16,4 +16,18 @@ langchain_community
 langchain_openai
 langchain_experimental
 langchain-groq
+fastapi
+beautifulsoup4
+mcp
+langchain-mcp-adapters
+gtts
+anthropic
+langchain-anthropic
+lxml
+ollama
+elevenlabs
+aiolimiter
+langgraph
+requests
+uvicorn
 -e .
