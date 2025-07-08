@@ -32,7 +32,7 @@ st.set_page_config(page_title="Health Assistant",
 # Needs Change
 st.markdown("""
 <div style="text-align: center; margin-bottom: 20px;">
-    <h1 style='color: #4CAF50; margin: 0;'>Wellness Care Companion Companion</h1>
+    <h1 style='color: #4CAF50; margin: 0;'>Zenithia Wellness Companion</h1>
 </div>
 """, unsafe_allow_html=True)
 
