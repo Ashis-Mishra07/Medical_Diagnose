@@ -746,39 +746,180 @@ if selected == 'Instant Medication':
 
 # Prescription Analyser Page  
 if selected == 'Prescription Analyser':
-    st.title('📋 Prescription Analyser')
-    st.markdown("Upload and analyze your medical prescription with AI assistance")
-    
-    # Quick link to external AI service
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); 
-                border: 2px solid #3b82f6; border-radius: 15px; 
-                padding: 25px; margin: 20px 0; text-align: center;">
-        <h3 style="color: #1e40af; margin-bottom: 15px;">🤖 AI Prescription Analysis</h3>
-        <p style="color: #1e3a8a; margin-bottom: 20px;">
-            Upload your prescription image and get instant AI analysis with our advanced system
-        </p>
-        <a href="https://prescriptionashis.streamlit.app/" target="_blank" 
-           style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-                  color: white; padding: 15px 30px; border-radius: 12px;
-                  text-decoration: none; font-weight: bold; font-size: 16px;
-                  display: inline-block; transition: all 0.3s ease;
-                  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);">
-            🔍 Launch AI Prescription Analyzer
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    st.markdown("### 📖 How it works:")
-    st.markdown("""
-    1. **📄 Upload** your medical prescription (PDF or image)  
-    2. **🔍 AI reads** the content and extracts drug names, dosages, and instructions  
-    3. **💬 Ask anything** related to the uploaded prescription (e.g., side effects, dosage timing)  
-    4. **📚 Get responses** directly from your document using our AI system  
-    5. **🚀 Launch the Analyzer** for an interactive Q&A experience
-    """)
+    from src.helper import get_pdf_text, get_text_chunks, get_vector_store, get_conversational_chain
+
+    # 💬 Handle user interaction
+    def handle_user_input(user_question):
+        with st.spinner("Analyzing your question..."):
+            response = st.session_state.conversation({
+                'question': user_question,
+                'chat_history': st.session_state.chatHistory
+            })
+        st.session_state.chatHistory = response['chat_history']
+
+    # 🔁 Session setup
+    if "conversation" not in st.session_state:
+        st.session_state.conversation = None
+    if "chatHistory" not in st.session_state:
+        st.session_state.chatHistory = []
+
+    # --- Layout: main content (center) and right column for PDF upload ---
+    main_col, right_col = st.columns([2, 1])
+
+    with main_col:
+        # Modern medical style
+        st.markdown("""
+        <style>
+        .rx-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1769aa;
+            margin-bottom: 0.2em;
+            letter-spacing: 0.5px;
+        }
+        .rx-sub {
+            color: #4b5563;
+            font-size: 1.1rem;
+            margin-top: -8px;
+            margin-bottom: 18px;
+        }
+        .rx-chatbox {
+            background: #f7fafc;
+            border: 1.5px solid #e3e8ee;
+            border-radius: 14px;
+            padding: 18px 22px 10px 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(23,105,170,0.06);
+        }
+        .rx-user {
+            background: #e3f2fd;
+            color: #0d47a1;
+            border-radius: 12px 12px 12px 4px;
+            padding: 12px 16px;
+            margin-bottom: 7px;
+            font-size: 1rem;
+        }
+        .rx-bot {
+            background: #e8f5e9;
+            color: #256029;
+            border-radius: 12px 12px 4px 12px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+        }
+        .rx-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .rx-input {
+            flex: 1;
+            border: 1.5px solid #b0bec5;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 1rem;
+            background: #f9f9f9;
+            color: #222;
+        }
+        .rx-submit {
+            background: linear-gradient(90deg, #1769aa 0%, #43cea2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .rx-submit:hover {
+            background: linear-gradient(90deg, #43cea2 0%, #1769aa 100%);
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="rx-header">🧾 Prescription Analyzer</div>
+        <div class="rx-sub">
+            Upload your prescription PDF and ask questions about your medicines, dosages, or instructions.<br>
+            <span style="color:#d97706;"><b>Note:</b> This tool is for informational use only. Always consult your doctor for medical advice.</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ➕ Input with Submit button below
+        st.markdown('<div class="rx-input-container">', unsafe_allow_html=True)
+        user_question = st.text_input(
+            "", placeholder="Type your question about the prescription...",
+            key="question_input", label_visibility="collapsed"
+        )
+        submit_clicked = st.button("Ask", key="submit_button", help="Submit your question")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        if submit_clicked and user_question and st.session_state.conversation:
+            handle_user_input(user_question)
+
+        # 📜 Show chat history with recent first and user-bot pairs
+        chat_blocks = []
+        for i in range(0, len(st.session_state.chatHistory), 2):
+            if i + 1 < len(st.session_state.chatHistory):
+                user_msg = st.session_state.chatHistory[i]
+                bot_msg = st.session_state.chatHistory[i + 1]
+
+                pair_html = f"""
+                <div class="rx-chatbox">
+                    <div class="rx-user"><b>👤 You:</b><br>{user_msg.content}</div>
+                    <div class="rx-bot"><b>🤖 Analyzer:</b><br>{bot_msg.content}</div>
+                </div>
+                """
+                chat_blocks.append(pair_html)
+
+        # Show latest at the top
+        for block in reversed(chat_blocks):
+            st.markdown(block, unsafe_allow_html=True)
+
+    with right_col:
+        # PDF upload on the right
+        st.markdown("""
+        <style>
+        .rx-upload-box {
+            background: #e3f2fd;
+            border: 1.5px solid #90caf9;
+            border-radius: 14px;
+            padding: 22px 18px 18px 18px;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(23,105,170,0.08);
+        }
+        .rx-upload-header {
+            color: #1769aa;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .rx-upload-note {
+            color: #374151;
+            font-size: 0.98rem;
+            margin-bottom: 12px;
+        }
+        </style>
+        <div class="rx-upload-box">
+            <div class="rx-upload-header">📄 Upload Prescription</div>
+            <div class="rx-upload-note">
+                Select your prescription PDF(s) to analyze.<br>
+                <span style="color:#d97706;">Multiple files supported.</span>
+            </div>
+        """, unsafe_allow_html=True)
+        pdf_docs = st.file_uploader("", accept_multiple_files=True)
+        if st.button("Process Prescription", key="pdf_process_btn"):
+            with st.spinner("Extracting and indexing your prescription..."):
+                raw_text = get_pdf_text(pdf_docs)
+                text_chunks = get_text_chunks(raw_text)
+                vector_store = get_vector_store(text_chunks)
+                st.session_state.conversation = get_conversational_chain(vector_store)
+                st.success("Prescription processed! You can now ask questions.")
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
 

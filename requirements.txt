@@ -30,4 +30,6 @@ aiolimiter
 langgraph
 requests
 uvicorn
+PyPDF2
+faiss-cpu
 -e .
