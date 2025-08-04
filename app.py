@@ -285,7 +285,7 @@ def initialize_chatbot():
             raise ValueError("PINECONE_API_KEY not found")
             
         # Initialize just the LLM for testing (without Pinecone)
-        llm = ChatGroq(model="llama3-8b-8192", api_key=GROQ_API_KEY)
+        llm = ChatGroq(model="llama3-70b-8192", api_key=GROQ_API_KEY)
         
         # Test the LLM connection
         test_response = llm.invoke("Hello")
@@ -618,7 +618,7 @@ if selected == 'Medical Chatbot':
     
     # Initialize simple LLM
     try:
-        llm = ChatGroq(model="llama3-8b-8192", api_key=GROQ_API_KEY)
+        llm = ChatGroq(model="llama3-70b-8192", api_key=GROQ_API_KEY)
     except Exception as e:
         st.error(f"❌ Error initializing LLM: {e}")
         st.stop()

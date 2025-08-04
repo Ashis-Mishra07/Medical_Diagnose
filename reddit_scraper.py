@@ -32,7 +32,7 @@ mcp_limiter = AsyncLimiter(1, 15)
 
 # Updated to supported Groq model
 model = ChatGroq(
-    model="llama3-8b-8192",  # Changed from mixtral-8x7b-32768
+    model="llama3-70b-8192",  # Changed from mixtral-8x7b-32768
     api_key=os.getenv("GROQ_API_KEY2")
 )
 

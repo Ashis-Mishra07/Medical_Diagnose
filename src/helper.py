@@ -35,7 +35,7 @@ def get_vector_store(text_chunks):
     return vector_store
 
 def get_conversational_chain(vector_store):
-    llm = ChatGroq(model="llama3-8b-8192", api_key=GROQ_API_KEY3)
+    llm = ChatGroq(model="llama3-70b-8192", api_key=GROQ_API_KEY3)
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     chain = ConversationalRetrievalChain.from_llm(llm=llm, retriever=vector_store.as_retriever(), memory=memory)
     return chain
